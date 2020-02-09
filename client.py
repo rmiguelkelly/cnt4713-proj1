@@ -2,19 +2,33 @@
 
 import sys
 import socket
+import signal
 
 class file_client:
     def __init__(self):
+        
+        signal.signal(signal.SIGALRM, self.alarm_handler)
+        signal.alarm(10)
+
         self.socket = socket.socket(socket.AF_INET, type=socket.SOCK_STREAM, proto=socket.IPPROTO_TCP)
-        self.on_connect = None
-        self.on_error = None
         self.buffer_size = 64
+    
+    def create_exception(self, msg):
+        ex = Exception()
+        ex.message = msg
+        return ex
+
+    def alarm_handler(self, signum, frame):
+        sys.exit(-2)
+        raise self.create_exception("Client Timeout")
+
 
     def connect(self, ip = '127.0.0.1', port = 3333):
+        
         try:
             self.socket.connect((ip, port))
         except:
-            self.on_error("Error connecting to server")
+            raise self.create_exception("Unable to connect")
         
 
     def send_file(self, path):
@@ -30,30 +44,26 @@ class file_client:
             file.close()
             self.socket.close()
         except:
-             self.on_error("Socket is not connected")
+            raise self.create_exception("Unable to send file")
 
-def client_error(m):
-    sys.stderr.write("ERROR: {}\n".format(m))
-    sys.exit(-1)
-
-def client_connect_success(m):
-    print("Connected Successfully")
 
 
 if __name__ == '__main__':
     client = file_client()
 
-    """Set up event handlers"""
-    client.on_connect = client_error
-    client.on_error = client_error
 
     if (len(sys.argv) <= 3):
         sys.stderr.write("ERROR: format should be: python client.py [HOST] [PORT] [PATH]\n")
         sys.exit(-1)
 
-    client.connect(sys.argv[1], int(sys.argv[2]))
-    client.send_file(sys.argv[3])
+    try:
+        client.connect(sys.argv[1], int(sys.argv[2]))
+        client.send_file(sys.argv[3])
 
-    sys.exit(0)
+        sys.exit(0)
+
+    except Exception as ex:
+        sys.stderr.write("ERROR: {}\n".format(ex.message))
+        sys.exit(-1)
 
 
