@@ -60,12 +60,12 @@ if __name__ == '__main__':
     signal.signal(signal.SIGINT, signal_handler)
     print('Press Ctrl+C to end server')
 
-    port = int(sys.argv[1]
+    port = int(sys.argv[1])
 
-    if port <= 0 or port >= 65535:
+    if (port <= 0 or port >= 65535):
         sys.stderr.write("ERROR: Port should be between 0 and 65535\n")
         exit(-1)
 
-    fs.run('', port))
+    fs.run('', port)
 
 
