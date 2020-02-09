@@ -42,7 +42,7 @@ class file_server:
             self.file_index += 1
             full_path = os.path.join(self.storage_path, "{}.file".format(self.file_index))
             c_thread = threading.Thread(target=self.handle_client_connection, args=(client, full_path))
-            #c_thread.daemon = True
+            c_thread.daemon = True
             c_thread.start()
 
 def signal_handler(signal, frame):
