@@ -15,35 +15,34 @@ class file_server:
     def end(self):
         self.server.close()
 
+    def handle_client_connection(self, client, path):
+        file = open(path, "w+")
+
+        buffer = client.recv(1024)
+        file.write(str(buffer))
+
+        while (len(buffer) > 0):
+            buffer = client.recv(1024)
+            file.write(str(buffer))
+
+        file.close()
+        client.close()
+
     def run(self, ip, port):
-        if port >= 0 and port <= 1024:
-            callback(False, "Invalid port number supplied")
 
         self.server.bind((ip, port))
         self.server.listen(10)
-
 
         if os.path.exists(self.storage_path) == False:
             os.mkdir(self.storage_path)
 
         while (True):
             (client, _) = self.server.accept()
-
             self.file_index += 1
-
             full_path = os.path.join(self.storage_path, "{}.file".format(self.file_index))
-
-            file = open(full_path, "w+")
-
-            buffer = client.recv(1024)
-            file.write(str(buffer))
-
-            while (len(buffer) > 0):
-                buffer = client.recv(1024)
-                file.write(str(buffer))
-
-            file.close()
-            client.close()
+            c_thread = threading.Thread(target=self.handle_client_connection, args=(client, full_path))
+            c_thread.daemon = True
+            c_thread.run()
 
 def signal_handler(signal, frame):
     fs.end()
