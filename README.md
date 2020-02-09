@@ -21,8 +21,4 @@ You are encouraged to host your code in private repositories on [GitHub](https:/
 
 ## TODO
 
-    ###########################################################
-    ##                                                       ##
-    ## REPLACE CONTENT OF THIS FILE WITH YOUR PROJECT REPORT ##
-    ##                                                       ##
-    ###########################################################
+

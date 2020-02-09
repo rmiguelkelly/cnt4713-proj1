@@ -8,6 +8,7 @@ class file_client:
         self.socket = socket.socket(socket.AF_INET, type=socket.SOCK_STREAM, proto=socket.IPPROTO_TCP)
         self.on_connect = None
         self.on_error = None
+        self.buffer_size = 64
 
     def connect(self, ip = '127.0.0.1', port = 3333):
         try:
@@ -19,12 +20,12 @@ class file_client:
     def send_file(self, path):
         try:
             file = open(path, "r")
-            fb = file.read(1024)
+            fb = file.read(self.buffer_size)
             self.socket.send(fb)
 
 
             while (len(fb) > 0):
-                fb = file.read(1024)
+                fb = file.read(self.buffer_size)
                 self.socket.send(fb)
 
             file.close()

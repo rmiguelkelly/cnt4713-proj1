@@ -11,6 +11,7 @@ class file_server:
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM, socket.IPPROTO_TCP)
         self.file_index = 0
         self.storage_path = storage
+        self.buffer_size = 64
 
     def end(self):
         self.server.close()
@@ -18,11 +19,11 @@ class file_server:
     def handle_client_connection(self, client, path):
         file = open(path, "w+")
 
-        buffer = client.recv(1024)
+        buffer = client.recv(self.buffer_size)
         file.write(str(buffer))
 
         while (len(buffer) > 0):
-            buffer = client.recv(1024)
+            buffer = client.recv(self.buffer_size)
             file.write(str(buffer))
 
         file.close()
