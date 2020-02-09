@@ -51,16 +51,15 @@ def signal_handler(signal, frame):
 
 if __name__ == '__main__':
     
-    if (len(sys.argv) <= 1):
-        sys.stderr.write("ERROR: format should be: python server.py [filepath]\n")
+    if (len(sys.argv) <= 2):
+        sys.stderr.write("ERROR: format should be: python server.py [PORT] [PATH]\n")
         exit(-1)
 
-    fs = file_server(storage=sys.argv[1])
-
+    fs = file_server(storage=sys.argv[2])
 
     signal.signal(signal.SIGINT, signal_handler)
-    print 'Press Ctrl+C to end server'
+    print('Press Ctrl+C to end server')
 
-    fs.run('', 3333)
+    fs.run('', int(sys.argv[1]))
 
 

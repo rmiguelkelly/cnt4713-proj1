@@ -51,13 +51,12 @@ if __name__ == '__main__':
     client.on_connect = client_error
     client.on_error = client_error
 
-    """Attempt to connect"""
-    client.connect()
-
-    """Send file to server"""
-
-    if (len(sys.argv) <= 1):
-        sys.stderr.write("ERROR: format should be: python client.py [filepath]\n")
+    if (len(sys.argv) <= 3):
+        sys.stderr.write("ERROR: format should be: python client.py [HOST] [PORT] [PATH]\n")
         exit(-1)
 
-    client.send_file(sys.argv[1])
+    """Attempt to connect"""
+    client.connect(sys.argv[1], int(sys.argv[2]))
+
+    """Send file to server"""
+    client.send_file(sys.argv[3])
