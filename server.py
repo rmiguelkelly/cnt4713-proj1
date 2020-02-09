@@ -17,7 +17,7 @@ class file_server:
         self.server.close()
 
     def handle_client_connection(self, client, path):
-        file = open(path, "w+")
+        file = open(path, "wb")
 
         buffer = client.recv(self.buffer_size)
         file.write(str(buffer))

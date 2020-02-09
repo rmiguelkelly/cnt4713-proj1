@@ -19,7 +19,7 @@ class file_client:
 
     def send_file(self, path):
         try:
-            file = open(path, "r")
+            file = open(path, "rb")
             fb = file.read(self.buffer_size)
             self.socket.send(fb)
 
