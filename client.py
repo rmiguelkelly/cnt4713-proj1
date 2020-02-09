@@ -26,8 +26,9 @@ class file_client:
             while (len(fb) > 0):
                 fb = file.read(1024)
                 self.socket.send(fb)
-                
+
             file.close()
+            self.socket.close()
         except:
              self.on_error("Socket is not connected")
 
@@ -50,8 +51,7 @@ if __name__ == '__main__':
         sys.stderr.write("ERROR: format should be: python client.py [HOST] [PORT] [PATH]\n")
         exit(-1)
 
-    """Attempt to connect"""
     client.connect(sys.argv[1], int(sys.argv[2]))
-
-    """Send file to server"""
     client.send_file(sys.argv[3])
+
+
