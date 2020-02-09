@@ -55,4 +55,9 @@ if __name__ == '__main__':
     client.connect()
 
     """Send file to server"""
-    client.send_file('/Users/ronankelly/Desktop/data2.txt')
+
+    if (len(sys.argv) <= 1):
+        sys.stderr.write("ERROR: format should be: python client.py [filepath]\n")
+        exit(-1)
+
+    client.send_file(sys.argv[1])

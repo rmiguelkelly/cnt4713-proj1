@@ -7,15 +7,13 @@ import signal
 import os
 
 class file_server:
-    def __init__(self):
+    def __init__(self, storage=''):
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM, socket.IPPROTO_TCP)
         self.file_index = 0
+        self.storage_path = storage
 
     def end(self):
         self.server.close()
-
-    def child_handler(client):
-        
 
     def run(self, ip, port):
         if port >= 0 and port <= 1024:
@@ -24,11 +22,18 @@ class file_server:
         self.server.bind((ip, port))
         self.server.listen(10)
 
+
+        if os.path.exists(self.storage_path) == False:
+            os.mkdir(self.storage_path)
+
         while (True):
             (client, _) = self.server.accept()
+
             self.file_index += 1
 
-            file = open("/Users/ronankelly/Desktop/netcentric/cnt4713-proj1/{}.file".format(self.file_index), "w+")
+            full_path = os.path.join(self.storage_path, "{}.file".format(self.file_index))
+
+            file = open(full_path, "w+")
 
             buffer = client.recv(1024)
             file.write(str(buffer))
@@ -37,18 +42,25 @@ class file_server:
                 buffer = client.recv(1024)
                 file.write(str(buffer))
 
-
             file.close()
             client.close()
-    
-
-fs = file_server()
 
 def signal_handler(signal, frame):
     fs.end()
     sys.exit(0)
 
-signal.signal(signal.SIGINT, signal_handler)
-print 'Press Ctrl+C to end server'
+if __name__ == '__main__':
+    
+    if (len(sys.argv) <= 1):
+        sys.stderr.write("ERROR: format should be: python server.py [filepath]\n")
+        exit(-1)
 
-fs.run('', 3333)
+    fs = file_server(storage=sys.argv[1])
+
+
+    signal.signal(signal.SIGINT, signal_handler)
+    print 'Press Ctrl+C to end server'
+
+    fs.run('', 3333)
+
+
