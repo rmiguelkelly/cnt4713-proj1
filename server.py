@@ -42,8 +42,8 @@ class file_server:
             self.file_index += 1
             full_path = os.path.join(self.storage_path, "{}.file".format(self.file_index))
             c_thread = threading.Thread(target=self.handle_client_connection, args=(client, full_path))
-            c_thread.daemon = True
-            c_thread.run()
+            #c_thread.daemon = True
+            c_thread.start()
 
 def signal_handler(signal, frame):
     fs.end()
@@ -53,7 +53,7 @@ if __name__ == '__main__':
     
     if (len(sys.argv) <= 2):
         sys.stderr.write("ERROR: format should be: python server.py [PORT] [PATH]\n")
-        exit(-1)
+        sys.exit(-1)
 
     fs = file_server(storage=sys.argv[2])
 

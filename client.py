@@ -23,7 +23,6 @@ class file_client:
             fb = file.read(self.buffer_size)
             self.socket.send(fb)
 
-
             while (len(fb) > 0):
                 fb = file.read(self.buffer_size)
                 self.socket.send(fb)
@@ -35,7 +34,7 @@ class file_client:
 
 def client_error(m):
     sys.stderr.write("ERROR: {}\n".format(m))
-    exit(-1)
+    sys.exit(-1)
 
 def client_connect_success(m):
     print("Connected Successfully")
@@ -50,9 +49,11 @@ if __name__ == '__main__':
 
     if (len(sys.argv) <= 3):
         sys.stderr.write("ERROR: format should be: python client.py [HOST] [PORT] [PATH]\n")
-        exit(-1)
+        sys.exit(-1)
 
     client.connect(sys.argv[1], int(sys.argv[2]))
     client.send_file(sys.argv[3])
+
+    sys.exit(0)
 
 
