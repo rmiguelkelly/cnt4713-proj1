@@ -20,5 +20,14 @@ You are encouraged to host your code in private repositories on [GitHub](https:/
 `server.py` and `client.py` are the entry points for the server and client part of the project.
 
 ## TODO
-Worked perfectly fine on my computer....
+
+server.py
+The server application requires a port and a path to store the files. The server uses 
+multiple threads ran as daemons to handle client connections concurrently which is less scalable
+and efficient as async input/output but whatever...  
+
+
+client.py
+The client uses a spcified ip and port in addition to a path to a file to send it to the server. The client sends the file
+by fragmenting it into a packets with a small size which allows for less network congestion.
 

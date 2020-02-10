@@ -19,29 +19,14 @@ class file_server:
     
 
     def handle_client_connection(self, client, path):
-        file = open(path, "wb")
-
-        potential_timeout_occured = True
-
-        def timeout():
-            if potential_timeout_occured:
-                file.write("ERROR: client unable to send data")
-                file.close()
-                client.close()
-                return
-
-        threading.Timer(10, timeout).start()
-    
+        file = open(path, "wb")    
 
         buffer = client.recv(self.buffer_size)
         file.write(buffer)
-        potential_timeout_occured = False
 
         while (len(buffer) > 0):
-            potential_timeout_occured = True
             buffer = client.recv(self.buffer_size)
             file.write(buffer)
-            potential_timeout_occured = False
 
         file.close()
         client.close()
