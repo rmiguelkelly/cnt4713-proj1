@@ -33,8 +33,9 @@ class file_server:
                 file.write(buffer)
 
         except:
-            file.truncate(0)
-            file.write("ERROR".encode('ascii'))
+            file.close()
+            file = open(path, "w")   
+            file.write("ERROR")
 
         finally:
             file.close()
