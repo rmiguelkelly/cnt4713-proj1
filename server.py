@@ -34,7 +34,7 @@ class file_server:
 
         except:
             file.truncate(0)
-            file.write("ERROR: client timeout".encode())
+            file.write("ERROR: client timeout")
 
         finally:
             file.close()
