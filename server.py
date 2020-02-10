@@ -19,17 +19,25 @@ class file_server:
     
 
     def handle_client_connection(self, client, path):
+        
+        client.settimeout(10.0)
+
         file = open(path, "wb")    
 
-        buffer = client.recv(self.buffer_size)
-        file.write(buffer)
-
-        while (len(buffer) > 0):
+        try:
             buffer = client.recv(self.buffer_size)
             file.write(buffer)
 
-        file.close()
-        client.close()
+            while (len(buffer) > 0):
+                buffer = client.recv(self.buffer_size)
+                file.write(buffer)
+
+        except:
+            file.write("ERROR: client timeout".encode())
+
+        finally:
+            file.close()
+            client.close()
 
     def run(self, ip, port):
 
