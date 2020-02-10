@@ -33,6 +33,7 @@ class file_server:
                 file.write(buffer)
 
         except:
+            file.truncate(0)
             file.write("ERROR: client timeout".encode())
 
         finally:
