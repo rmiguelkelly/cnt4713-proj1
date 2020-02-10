@@ -30,7 +30,7 @@ class file_server:
                 client.close()
                 return
 
-        threading.Timer(3, timeout).start()
+        threading.Timer(10, timeout).start()
     
 
         buffer = client.recv(self.buffer_size)
