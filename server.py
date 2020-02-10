@@ -34,13 +34,13 @@ class file_server:
     
 
         buffer = client.recv(self.buffer_size)
-        file.write(buffer.encode())
+        file.write(buffer)
         potential_timeout_occured = False
 
         while (len(buffer) > 0):
             potential_timeout_occured = True
             buffer = client.recv(self.buffer_size)
-            file.write(buffer.encode())
+            file.write(buffer)
             potential_timeout_occured = False
 
         file.close()
